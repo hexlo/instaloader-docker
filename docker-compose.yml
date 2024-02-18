@@ -1,0 +1,27 @@
+#volumes:
+#  enc1:
+#    driver_opts:
+#      type: "nfs"
+#      o: addr=192.168.32.100,nfsvers=4,tcp,rw,nolock,soft
+#      device: ":/mnt/zpool0/enc1/instaloader"
+
+services:
+  instaloader:
+    image: instaloader:dev
+    container_name: instaloader
+    stdin_open: true
+    tty: true
+    volumes:
+      - type: bind
+        source: ${PWD}/downloads
+        target: /downloads
+      - type: bind
+        source: ${PWD}/args.txt
+        target: /instaloader/args.txt
+      - type: bind
+        source: ${PWD}/targets.txt
+        target: /instaloader/targets.txt
+    environment:
+      - UID=1000
+      - GID=1000
+      - TZ=America/Toronto
